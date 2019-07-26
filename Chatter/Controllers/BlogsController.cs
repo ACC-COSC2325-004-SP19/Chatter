@@ -53,7 +53,7 @@ namespace Chatter.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Content,Date")] Blog blog)
+        public async Task<IActionResult> Create([Bind("Id,Title,Content,Date,BoardId")] Blog blog)
         {
             if (ModelState.IsValid)
             {
@@ -85,7 +85,7 @@ namespace Chatter.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,Date")] Blog blog)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,Date,BoardId")] Blog blog)
         {
             if (id != blog.Id)
             {

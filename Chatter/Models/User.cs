@@ -10,6 +10,6 @@ namespace Chatter.Models
         public int Id { get; set; }
         public string userName { get; set; }
 
-        public Blog BlogId { get; set; }
+        public List<Blog> Blogs{ get; set; }
     }
 }

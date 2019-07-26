@@ -4,14 +4,16 @@ using Chatter.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Chatter.Migrations
 {
     [DbContext(typeof(ChatterContext))]
-    partial class ChatterContextModelSnapshot : ModelSnapshot
+    [Migration("20190726032525_updateModels")]
+    partial class updateModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,7 +27,7 @@ namespace Chatter.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BoardId");
+                    b.Property<int?>("BoardIdId");
 
                     b.Property<string>("Content");
 
@@ -33,13 +35,13 @@ namespace Chatter.Migrations
 
                     b.Property<string>("Title");
 
-                    b.Property<int?>("UserId");
+                    b.Property<int?>("UserIdId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BoardId");
+                    b.HasIndex("BoardIdId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserIdId");
 
                     b.ToTable("Blog");
                 });
@@ -72,13 +74,13 @@ namespace Chatter.Migrations
 
             modelBuilder.Entity("Chatter.Models.Blog", b =>
                 {
-                    b.HasOne("Chatter.Models.Board", "Board")
+                    b.HasOne("Chatter.Models.Board", "BoardId")
                         .WithMany("Blogs")
-                        .HasForeignKey("BoardId");
+                        .HasForeignKey("BoardIdId");
 
-                    b.HasOne("Chatter.Models.User", "User")
+                    b.HasOne("Chatter.Models.User", "UserId")
                         .WithMany("Blogs")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserIdId");
                 });
 #pragma warning restore 612, 618
         }
