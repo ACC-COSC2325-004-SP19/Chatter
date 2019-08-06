@@ -15,9 +15,29 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" integrity="sha256-UzFD2WYH2U1dQpKDjjZK72VtPeWP50NoJjd26rnAdUI=" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC&display=swap" rel="stylesheet">
+    <style>
+        .navbar-nav {
+            font-family: 'Amatic SC', cursive;
+            font-size: 30px; 
+        }
+        .navbar .container {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            height: unset;
+        }
+
+        .navbar-collapse {
+            flex-grow: 1;
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-default">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -26,7 +46,10 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Chatter</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">
+                    <i class="fas fa-dove fa-3x" style="color:lightgoldenrodyellow; text-shadow:1px 1px 1px black"></i>
+                    <span style="font-family: 'Amatic SC', cursive; font-size: 55px;">Chatter</span>
+                </a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -34,9 +57,9 @@
                     <li><a asp-area="" asp-controller="Blogs" asp-action="Index">Blog</a></li>
                     <li><a asp-area="" asp-controller="Boards" asp-action="Index">Boards</a></li>
                 </ul>
+                <partial name="_LoginPartial" />
             </div>
         </div>
-        <partial name="_LoginPartial" />
     </nav>
 
     <partial name="_CookieConsentPartial" />
