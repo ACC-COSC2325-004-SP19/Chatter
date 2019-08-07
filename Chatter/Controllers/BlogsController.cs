@@ -46,7 +46,7 @@ namespace Chatter.Controllers
         public async Task<IActionResult> Create()
         {
             var blogViewModel = new BlogCreateViewModel();
-            var grabBoards = await _context.Board.ToListAsync();
+            List<Board> grabBoards = await _context.Board.OrderBy(b => b.Topic).ToListAsync();
             blogViewModel.Boards = grabBoards;
             return View(blogViewModel);
         }
