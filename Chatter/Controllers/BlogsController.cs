@@ -43,9 +43,12 @@ namespace Chatter.Controllers
         }
 
         // GET: Blogs/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var blogViewModel = new BlogCreateViewModel();
+            var grabBoards = await _context.Board.ToListAsync();
+            blogViewModel.Boards = grabBoards;
+            return View(blogViewModel);
         }
 
         // POST: Blogs/Create
@@ -57,6 +60,7 @@ namespace Chatter.Controllers
         {
             if (ModelState.IsValid)
             {
+                blog.Date = DateTime.Now;
                 _context.Add(blog);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
