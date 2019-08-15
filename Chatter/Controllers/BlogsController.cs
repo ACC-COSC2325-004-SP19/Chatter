@@ -21,7 +21,13 @@ namespace Chatter.Controllers
         // GET: Blogs
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Blog.ToListAsync());
+            var blogs = await _context.Blog.ToListAsync();
+            foreach (var blog in blogs)
+            {
+                blog.Board = await _context.Board.FindAsync(blog.BoardId);
+
+            }
+            return View(blogs);
         }
 
         // GET: Blogs/Details/5
@@ -34,6 +40,7 @@ namespace Chatter.Controllers
 
             var blog = await _context.Blog
                 .FirstOrDefaultAsync(m => m.Id == id);
+            blog.Board = await _context.Board.FindAsync(blog.BoardId);
             if (blog == null)
             {
                 return NotFound();
