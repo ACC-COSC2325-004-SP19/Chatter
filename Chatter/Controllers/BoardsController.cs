@@ -21,7 +21,8 @@ namespace Chatter.Controllers
         // GET: Boards
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Board.ToListAsync());
+
+            return View(await _context.Board.Include(b => b.Blogs).ToListAsync());
         }
 
         // GET: Boards/Details/5
@@ -43,9 +44,12 @@ namespace Chatter.Controllers
         }
 
         // GET: Boards/Create
-        public IActionResult Create()
+        public async Task<IActionResult> CreateAsync()
         {
-            return View();
+            var boardToListBlogs = new Board();
+            List<Blog> grabBlogs = await _context.Blog.OrderBy(b => b.Title).ToListAsync();
+            boardToListBlogs.Blogs = grabBlogs;
+            return View(boardToListBlogs);
         }
 
         // POST: Boards/Create
