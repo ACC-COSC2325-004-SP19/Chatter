@@ -14,9 +14,23 @@ namespace Chatter.Areas.Identity
     {
         public void Configure(IWebHostBuilder builder)
         {
-            builder.ConfigureServices((context, services) => {
-                services.AddDefaultIdentity<User>()
-                .AddEntityFrameworkStores<ChatterContext>();
+            builder.ConfigureServices((context, services) =>
+            {
+                services.AddIdentity<User, IdentityRole>(options =>
+                {
+                    //Default password settings
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequiredLength = 6;
+                    options.Password.RequiredUniqueChars = 1;
+                })
+.AddRoleManager<RoleManager<IdentityRole>>()
+.AddDefaultUI()
+.AddDefaultTokenProviders()
+.AddEntityFrameworkStores<ChatterContext>();
+
             });
         }
     }

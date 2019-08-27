@@ -28,7 +28,7 @@ namespace Chatter
                 {
                     var context = services.GetRequiredService<ChatterContext>();
                     context.Database.Migrate();
-                    SeedData.Initialize(services);
+                    SeedData.InitializeAsync(services).Wait();
                 }
                 catch (Exception ex)
                 {

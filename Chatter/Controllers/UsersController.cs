@@ -6,44 +6,53 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Chatter.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Chatter.Controllers
 {
     public class UsersController : Controller
     {
         private readonly ChatterContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public UsersController(ChatterContext context)
+        public UsersController(ChatterContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Users
-        public async Task<IActionResult> Index()
+        public ActionResult Index()
         {
-            return View(await _context.User.ToListAsync());
+            var users = ConvertFromDatabase(_context.Users.ToArray());
+            return View(users);
+        }
+
+        private IEnumerable<UserViewModel> ConvertFromDatabase(IEnumerable<User> users)
+        {
+            return users.Select(u => new UserViewModel()
+            {
+                EmailAddress = u.Email,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                Id = u.Id,
+                Type = (UserType)u.TypeId
+            }).ToList();
         }
 
         // GET: Users/Details/5
-        public async Task<IActionResult> Details(string id)
+        public ActionResult Details(string id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var user = await _context.User
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var user = _context.Users.FirstOrDefault(u => u.Id == id);
             if (user == null)
-            {
-                return NotFound();
-            }
+                throw new Exception();
+            var newUser = ConvertFromDatabase(new[] { user }).First();
+            return View(newUser);
 
-            return View(user);
         }
 
         // GET: Users/Create
-        public IActionResult Create()
+        public ActionResult Create()
         {
             return View();
         }
@@ -53,15 +62,41 @@ namespace Chatter.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("userName")] User user)
+        public async Task<IActionResult> Create(UserViewModel user)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(user);
-                await _context.SaveChangesAsync();
+                var newUser = new User()
+                {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.EmailAddress,
+                    TypeId = (int)user.Type
+                };
+
+                var result = await _userManager.CreateAsync(newUser);
+                if(!result.Succeeded)
+                {
+                    throw new Exception();
+                }
+
+                var newRole = string.Empty;
+                switch(user.Type)
+                {
+                    case UserType.Administrator:
+                        newRole = Constants.Roles.Admin;
+                        break;
+                    case UserType.User:
+                        newRole = Constants.Roles.User;
+                        break;
+                }
+                await _userManager.AddToRoleAsync(newUser, newRole);
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            catch
+            {
+                return View();
+            }
         }
 
         // GET: Users/Edit/5
