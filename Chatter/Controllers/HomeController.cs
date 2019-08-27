@@ -5,14 +5,29 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Chatter.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Chatter.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly ChatterContext _context;
+
+        public HomeController(ChatterContext context)
         {
-            return View();
+            _context = context;
+        }
+        public async Task<IActionResult> Index()
+        {
+            var blogs = await _context.Blog.ToListAsync();
+            foreach (var blog in blogs)
+            {
+                blog.Board = await _context.Board.FindAsync(blog.BoardId);
+
+            }
+            return View(blogs);
+
+            
         }
 
         public IActionResult About()
