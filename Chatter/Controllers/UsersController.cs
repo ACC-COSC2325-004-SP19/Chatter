@@ -36,7 +36,7 @@ namespace Chatter.Controllers
                 FirstName = u.FirstName,
                 LastName = u.LastName,
                 Id = u.Id,
-                Type = (UserType)u.TypeId
+                Type = (UserType)u.TypeId, 
             }).ToList();
         }
 

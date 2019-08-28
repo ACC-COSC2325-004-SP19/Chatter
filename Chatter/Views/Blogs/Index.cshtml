@@ -28,27 +28,31 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Board.Topic)
-            </td>
-            <td>
-                <a class="btn btn-info" href='@(Url.Action("Edit", "Blogs", new { id = item.Id }))'>Edit</a>
-                <a class="btn btn-info" href='@(Url.Action("Details", "Blogs", new { id = item.Id }))'>Details</a>
-                <a class="btn btn-danger" href='@(Url.Action("Delete", "Blogs", new { id = item.Id }))'>Delete</a>
-            </td>
 
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Content)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Board.Topic)
+                </td>
+                <td>
+                    <a class="btn btn-info" href='@(Url.Action("Edit", "Blogs", new { id = item.Id }))'>Edit</a>
+                    <a class="btn btn-info" href='@(Url.Action("Details", "Blogs", new { id = item.Id }))'>Details</a>
+                    <a class="btn btn-danger" href='@(Url.Action("Delete", "Blogs", new { id = item.Id }))'>Delete</a>
+                </td>
+
+            </tr>
+        }
+
+
     </tbody>
 </table>

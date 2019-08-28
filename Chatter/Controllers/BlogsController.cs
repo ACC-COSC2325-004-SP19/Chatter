@@ -6,22 +6,26 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Chatter.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace Chatter.Controllers
 {
     public class BlogsController : Controller
     {
         private readonly ChatterContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public BlogsController(ChatterContext context)
+        public BlogsController(ChatterContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Blogs
         public async Task<IActionResult> Index()
         {
-            var blogs = await _context.Blog.ToListAsync();
+            var blogs = await _context.Blog.Where(u => u.UserId == _userManager.GetUserId(User)).ToListAsync();
             foreach (var blog in blogs)
             {
                 blog.Board = await _context.Board.FindAsync(blog.BoardId);
@@ -63,11 +67,13 @@ namespace Chatter.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create([Bind("Id,Title,Content,Date,BoardId")] Blog blog)
         {
             if (ModelState.IsValid)
             {
                 blog.Date = DateTime.Now;
+                blog.UserId = _userManager.GetUserId(User);
                 _context.Add(blog);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
