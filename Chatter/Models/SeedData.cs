@@ -40,6 +40,8 @@ namespace Chatter.Models
                     };
 
 
+
+
                     var result = await userManager.CreateAsync(user, "password");
                     if (!result.Succeeded)
                     {
@@ -49,7 +51,29 @@ namespace Chatter.Models
                     var userId = await userManager.GetUserIdAsync(user);
 
                     await userManager.AddToRoleAsync(user, Constants.Roles.Admin);
+
+                    var user2 = new User()
+                    {
+                        FirstName = "FirstName",
+                        LastName = "LastName",
+                        Email = userEmail+2,
+                        UserName = userEmail+2
+                    };
+
+
+
+
+                    var result2 = await userManager.CreateAsync(user2, "password");
+                    if (!result2.Succeeded)
+                    {
+                        throw new Exception();
+                    }
+                    user2 = await userManager.FindByEmailAsync(userEmail+2);
+                    var userId2 = await userManager.GetUserIdAsync(user2);
+
+                    await userManager.AddToRoleAsync(user2, Constants.Roles.User);
                 }
+
 
                 if (UserId == null)
                 {

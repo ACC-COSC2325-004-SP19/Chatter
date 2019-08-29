@@ -6,7 +6,7 @@
         background-color: lightsteelblue;
         width: 50%;
         margin-left: 0;
-        height: 100%;
+        height: 100vh;
         margin-top: -40px;
     }
 
@@ -24,23 +24,20 @@
         margin-right: 200px;
         margin-top: 200px;
     }
-
 </style>
+@if (User.IsInRole(Constants.Roles.User) || User.IsInRole(Constants.Roles.Admin))
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                </th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-            </th>
-            <th>
-            </th>
-          
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (User.IsInRole(Constants.Roles.User) || User.IsInRole(Constants.Roles.Admin))
-        {
 
             @foreach (var item in Model)
             {
@@ -54,8 +51,9 @@
 
                 </tr>
             }
-        }
-    </tbody>
-</table>
+            
+        </tbody>
+    </table>
+}
 
 

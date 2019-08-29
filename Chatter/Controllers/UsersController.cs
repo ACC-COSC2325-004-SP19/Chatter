@@ -74,13 +74,13 @@ namespace Chatter.Controllers
                     TypeId = (int)user.Type
                 };
 
-                var result = await _userManager.CreateAsync(newUser);
+                var result = await _userManager.CreateAsync(newUser, "password");
                 if(!result.Succeeded)
                 {
                     throw new Exception();
                 }
 
-                var newRole = string.Empty;
+                var newRole = "";
                 switch(user.Type)
                 {
                     case UserType.Administrator:
