@@ -33,8 +33,12 @@ namespace Chatter.Controllers
                 return NotFound();
             }
 
-            var board = await _context.Board
+            var board = await _context.Board.Include(b => b.Blogs)
                 .FirstOrDefaultAsync(m => m.Id == id);
+            var blog = await _context.Blog
+               .FirstOrDefaultAsync(m => m.Id == id);
+            blog.Board = await _context.Board.FindAsync(blog.BoardId);
+
             if (board == null)
             {
                 return NotFound();
@@ -43,8 +47,10 @@ namespace Chatter.Controllers
             return View(board);
         }
 
+        
+
         // GET: Boards/Create
-        public async Task<IActionResult> CreateAsync()
+        public async Task<IActionResult> Create()
         {
             var boardToListBlogs = new Board();
             List<Blog> grabBlogs = await _context.Blog.OrderBy(b => b.Title).ToListAsync();

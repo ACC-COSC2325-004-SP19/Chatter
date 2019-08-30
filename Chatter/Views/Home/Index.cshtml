@@ -41,15 +41,18 @@
 
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Content)
-                    </td>
+            <tr>
+                <td>
+                    <a href='@(Url.Action("Details", "Boards", new { id = item.BoardId }))'>@Html.DisplayFor(modelItem => item.Title)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Content)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BoardId)
+                </td>
 
-                </tr>
+            </tr>
             }
             
         </tbody>

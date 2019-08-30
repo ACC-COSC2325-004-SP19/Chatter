@@ -10,7 +10,21 @@
     <h4>Board</h4>
     <hr />
     <dl class="dl-horizontal">
-    </dl>
+        <dt>
+        </dt>
+       
+        <dd>
+            @foreach (var blog in Model.Blogs)
+            {
+            <div>
+         
+                @blog.Title;
+                
+            </div> 
+
+            }
+         </dd>
+</dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
